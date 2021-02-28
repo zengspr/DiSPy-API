@@ -1,20 +1,22 @@
 import uvicorn
-import graphene
 from fastapi import FastAPI
-from starlette.graphql import GraphQLApp
+
+from src.routes import graphql
 
 
-class Query(graphene.ObjectType):
-    hello = graphene.String()
-
-    def resolve_hello(self, info):
-        return "Hello World!"
-
+"""
+This is the entry point of the application. All the server-related configuration
+(middleware, URLs, etc.) is set up here.
+"""
 
 server = FastAPI()
-server.add_route("/", GraphQLApp(schema=graphene.Schema(query=Query)))
+
+server.include_router(graphql.router)
 
 
 if __name__ == "__main__":
-    # Opens an interactive tool to execute GraphQL queries on this server
-    uvicorn.run(server, host="localhost", port=8000)
+	"""
+	Going to http://localhost:8000/api opens an interactive tool to execute 
+	GraphQL queries on this server.
+	"""
+	uvicorn.run(server, host="localhost", port=8000)
