@@ -10,3 +10,10 @@ router = APIRouter()
 @router.api_route('/api', methods=["GET", "POST"])
 def graphQLEndpoint():
 	return GraphQLApp(schema=Schema(query=Query))
+
+
+@router.get('/explorer')
+def graphQLExplorer():
+	return GraphQLApp(schema=Schema(query=Query))
+
+

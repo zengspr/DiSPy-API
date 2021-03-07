@@ -3,7 +3,7 @@ from graphene.test import Client, Schema
 from src.schemas.query import Query
 
 
-class QueryTests(unittest.TestCase):
+class HelloTests(unittest.TestCase):
 	@classmethod
 	def setUpClass(cls):
 		"""

@@ -10,21 +10,21 @@ class MainTests(unittest.TestCase):
         # IDE without it.
         cls._client: TestClient = TestClient(server)
 
-    def test_EndpointGET_OK(self):
+    def test_EndpointGET_hello_OK(self):
         request = '/api?query={ hello }'
 
         response = self._client.get(request)
 
         self.assertEqual(200, response.status_code)
 
-    def test_EndpointPOST_OK(self):
+    def test_EndpointPOST_hello_OK(self):
         request = '/api?query={ hello }'
 
         response = self._client.post(request)
 
         self.assertEqual(200, response.status_code)
 
-    def test_EndpointPOSTJson_OK(self):
+    def test_EndpointPOSTJson_hello_OK(self):
         request = {
             'query': '{ hello }'
         }
@@ -33,7 +33,7 @@ class MainTests(unittest.TestCase):
 
         self.assertEqual(200, response.status_code)
 
-    def test_EndpointPOSTGraphQL_OK(self):
+    def test_EndpointPOSTGraphQL_hello_OK(self):
         request = """
             query {
                 hello
