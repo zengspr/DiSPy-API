@@ -12,7 +12,9 @@ class MatrixProductTests(unittest.TestCase):
 	def test_QueryMatrixProductField_WithoutArgs_Fails(self):
 		request = """
 			query {
-				matrixProduct
+				matrixOperations {
+					product
+				}
 			}
 		"""
 
@@ -25,7 +27,9 @@ class MatrixProductTests(unittest.TestCase):
 	def test_QueryMatrixProductField_WithListOfChars_Fails(self):
 		request = """
 			query {
-				matrixProduct(first: [["a"]], second: [["b"]])
+				matrixOperations {
+					product(first: [["a"]], second: [["b"]])
+				}
 			}
 		"""
 
@@ -38,7 +42,9 @@ class MatrixProductTests(unittest.TestCase):
 	def test_QueryMatrixProductField_WithInvalidMatrices_Fails(self):
 		request = """
 			query {
-				matrixProduct(first: [[]], second: [[]])
+				matrixOperations {
+					product(first: [[]], second: [[]])
+				}
 			}
 		"""
 
@@ -47,21 +53,23 @@ class MatrixProductTests(unittest.TestCase):
 
 		# Here we get back a response because the args are valid, but the service fails, so
 		# GraphQL returns a None.
-		self.assertIsNone(response['data']['matrixProduct'])
+		self.assertIsNone(response['data']['matrixOperations']['product'])
 		self.assertTrue('errors' in response)
 		self.assertGreaterEqual(len(response['errors']), 1)
 
 	def test_QueryMatrixProductField_WithValidMatrices_OK(self):
 		request = """
 			query {
-				matrixProduct(first: [[1, 2], [3, 4]], second: [[2, 0], [1, 2]])
+				matrixOperations {
+					product(first: [[1, 1], [1, 1]], second: [[1, 1], [1, 1]])
+				}
 			}
 		"""
 
 		response = self._client.execute(request)
 
 		self.assertFalse('errors' in response)
-		self.assertEqual([[4, 4], [10, 8]], response['data']['matrixProduct'])
+		self.assertEqual([[2, 2], [2, 2]], response['data']['matrixOperations']['product'])
 
 
 if __name__ == '__main__':

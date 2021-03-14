@@ -1,9 +1,6 @@
-from graphene import ObjectType, String, Int, List, Field, Argument
-from graphql import GraphQLError
+from graphene import ObjectType, String, Field
 
-import numpy as np
-
-from src.integrations import numpyService
+from src.fields.matrixOperations import MatrixOperations
 
 
 class Query(ObjectType):
@@ -12,17 +9,12 @@ class Query(ObjectType):
 	schema {
 		query {
 			hello: String!
-			matrixProduct(first: [[Int]], second: [[Int]]): [[Int]]
+			matrixOperations {
+				matrixProduct(first: [[Int]], second: [[Int]]): [[Int]]
+			}
 		}
 	}
-
-	All of the resolvers for query operations will live in this class.
-
-	TODO:
-		- Make each ObjectType in Query into a separate class and import it
 	"""
-
-	# hello: String!
 	hello = String(required=True)
 
 	def resolve_hello(self, info):
@@ -33,25 +25,12 @@ class Query(ObjectType):
 		"""
 		return "Hello World!"
 
+	# This field is an ObjectType instead of a Scalar like 'hello'.
+	matrixOperations = Field(MatrixOperations)
 
-	# matrixProduct(...): [[Int!]!]!
-	matrix = List(List(Int))
-	matrixProduct = Field(
-		matrix, first=Argument(matrix, required=True), second=Argument(matrix, required=True))
-
-	def resolve_matrixProduct(
-			self, info, first: type(matrix), second: type(matrix)) -> type(matrixProduct):
+	def resolve_matrixOperations(self, info):
 		"""
-		Somehow Graphene.List works as an argument to np.asarray and we can also automatically
-		convert from a python list back to a Graphene.List. It also seems like exception messages
-		are automatically passed to the GraphQL client in the response.
+		Resolve to whatever MatrixOperations resolves to.
+		TODO: How does this work? Is this the correct semantics?
 		"""
-		first_np = np.asarray(first, dtype=np.int32)
-		second_np = np.asarray(second, dtype=np.int32)
-
-		try:
-			product = numpyService.matrixProduct(first_np, second_np)
-		except ValueError:
-			raise GraphQLError('Invalid arguments')
-
-		return product.tolist()
+		return MatrixOperations()

@@ -4,8 +4,7 @@ from src.routes import graphql
 
 
 """
-This is the entry point of the application. All the server-related configuration
-(middleware, URLs, etc.) is set up here.
+Starts the server. All the server-related configuration (middleware, URLs, etc.) is set up here.
 """
 
 server = FastAPI()

@@ -18,6 +18,9 @@ Accordingly:
 In this NumPy example, this means that Query attempts to parse the GraphQL query into
 np array_like types and attempts to parse array_like into the custom MatrixProduct GraphQL
 scalar. This also means that the MatrixProduct scalar is defined outside of the service class.
+
+Ideally, services should "live by themselves" so that they can be scaled independently of
+other services and the internal GraphQL server(s).
 """
 
 
