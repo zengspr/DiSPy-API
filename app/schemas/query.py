@@ -1,19 +1,22 @@
 from graphene import ObjectType, String, Field
 
-from src.fields.matrixOperations import MatrixOperations
+from app.fields.matrix_operations import MatrixOperations
 
 
 class Query(ObjectType):
 	"""
-	This class represents a GraphQL schema with the structure:
-	schema {
+	This class represents the query types in a GraphQL API with the schema:
 		query {
 			hello: String!
 			matrixOperations {
 				matrixProduct(first: [[Int]], second: [[Int]]): [[Int]]
 			}
+			dispy(Path) {
+				distortionGroup(IO1, IO2, ...): String
+				possibleIrreps(...),
+				perturbedPath(...),
+			},
 		}
-	}
 	"""
 	hello = String(required=True)
 
@@ -26,9 +29,9 @@ class Query(ObjectType):
 		return "Hello World!"
 
 	# This field is an ObjectType instead of a Scalar like 'hello'.
-	matrixOperations = Field(MatrixOperations)
+	matrix_operations = Field(MatrixOperations)
 
-	def resolve_matrixOperations(self, info):
+	def resolve_matrix_operations(self, info):
 		"""
 		Resolve to whatever MatrixOperations resolves to.
 		TODO: How does this work? Is this the correct semantics?

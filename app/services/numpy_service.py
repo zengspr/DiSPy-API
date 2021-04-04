@@ -24,6 +24,6 @@ other services and the internal GraphQL server(s).
 """
 
 
-def matrixProduct(first: np.ndarray, second: np.ndarray) -> np.ndarray:
+def matrix_product(first: np.ndarray, second: np.ndarray) -> np.ndarray:
 	return np.matmul(first, second)
 

@@ -1,6 +1,6 @@
 import unittest
 from graphene.test import Client, Schema
-from src.schemas.query import Query
+from app.schemas.query import Query
 
 
 class HelloTests(unittest.TestCase):
@@ -13,7 +13,7 @@ class HelloTests(unittest.TestCase):
 		cls._schema = Schema(query=Query)
 		cls._client = Client(cls._schema)
 
-	def test_QueryHelloField_ReturnsHelloWorld(self):
+	def test_query_hello_field_returns_hello_world(self):
 		request = """
 			query {
 				hello

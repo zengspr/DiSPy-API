@@ -1,7 +1,7 @@
 from graphene import ObjectType, Int, List, Field, Argument
 from graphql import GraphQLError
 
-from src.integrations import numpyService
+from app.services import numpy_service
 
 import numpy as np
 
@@ -25,7 +25,7 @@ class MatrixOperations(ObjectType):
 		second_matrix = np.asarray(second, dtype=np.int32)
 
 		try:
-			product = numpyService.matrixProduct(first_matrix, second_matrix)
+			product = numpy_service.matrix_product(first_matrix, second_matrix)
 		except ValueError:
 			raise GraphQLError('Invalid arguments')
 

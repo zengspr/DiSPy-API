@@ -1,15 +1,15 @@
 import unittest
 from graphene.test import Client, Schema
-from src.schemas.query import Query
+from app.schemas.query import Query
 
 
-class MatrixProductTests(unittest.TestCase):
+class MatrixOperationsTests(unittest.TestCase):
 	@classmethod
 	def setUpClass(cls):
 		cls._schema = Schema(query=Query)
 		cls._client = Client(cls._schema)
 
-	def test_QueryMatrixProductField_WithoutArgs_Fails(self):
+	def test_query_matrix_product_without_args_fails(self):
 		request = """
 			query {
 				matrixOperations {
@@ -24,7 +24,7 @@ class MatrixProductTests(unittest.TestCase):
 		self.assertTrue('errors' in response)
 		self.assertGreaterEqual(len(response['errors']), 1)
 
-	def test_QueryMatrixProductField_WithListOfChars_Fails(self):
+	def test_query_matrix_product_list_of_chars_fails(self):
 		request = """
 			query {
 				matrixOperations {
@@ -39,7 +39,7 @@ class MatrixProductTests(unittest.TestCase):
 		self.assertTrue('errors' in response)
 		self.assertGreaterEqual(len(response['errors']), 1)
 
-	def test_QueryMatrixProductField_WithInvalidMatrices_Fails(self):
+	def test_query_matrix_product_invalid_matrices_fails(self):
 		request = """
 			query {
 				matrixOperations {
@@ -57,7 +57,7 @@ class MatrixProductTests(unittest.TestCase):
 		self.assertTrue('errors' in response)
 		self.assertGreaterEqual(len(response['errors']), 1)
 
-	def test_QueryMatrixProductField_WithValidMatrices_OK(self):
+	def test_query_matrix_product_field_valid_matrices_success(self):
 		request = """
 			query {
 				matrixOperations {
