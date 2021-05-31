@@ -1,6 +1,8 @@
-from graphene import ObjectType, String, Field
+from graphene import ObjectType, String, Field, Argument, Boolean, Int
 
 from app.fields.matrix_operations import MatrixOperations
+from app.fields.dispy import DiSPy
+from app.utils.utils import test_images_dir
 
 
 class Query(ObjectType):
@@ -9,17 +11,16 @@ class Query(ObjectType):
 		query {
 			hello: String!
 			matrixOperations {
-				matrixProduct(first: [[Int]], second: [[Int]]): [[Int]]
+				product(first: [[Int]], second: [[Int]]): [[Int]]
 			}
-			dispy(Path) {
-				distortionGroup(IO1, IO2, ...): String
-				possibleIrreps(...),
-				perturbedPath(...),
+			dispy(perturb: Boolean!, numImages: Int!, images: String!, ...) {
+				distortionGroup(): Path
+				possibleIrreps(distortionGroupName: String!): String,
+				perturbedPath(irrepNumber: Int!): Path,
 			},
 		}
 	"""
 	hello = String(required=True)
-
 	def resolve_hello(self, info):
 		"""
 		Every field has a corresponding resolver that specifies how to respond to a query
@@ -30,10 +31,21 @@ class Query(ObjectType):
 
 	# This field is an ObjectType instead of a Scalar like 'hello'.
 	matrix_operations = Field(MatrixOperations)
-
 	def resolve_matrix_operations(self, info):
 		"""
 		Resolve to whatever MatrixOperations resolves to.
 		TODO: How does this work? Is this the correct semantics?
 		"""
 		return MatrixOperations()
+
+	"""
+	Let's keep all the necessary arguments as parameters in the top level dispy field for now, and 
+	reevaluate when we have a better understanding of GraphQL.
+	Need to figure out how the initial guess images will be provided to the API.
+	"""
+	dispy = Field(DiSPy,
+				  perturb=Argument(Boolean, required=True),
+				  numImages=Argument(Int, required=True),
+				  images=Argument(String, default_value=test_images_dir()))
+	def resolve_disPy(self, info, perturb: bool, num_images: int, images: str):
+		return DiSPy(perturb, num_images, images)
