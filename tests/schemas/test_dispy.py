@@ -21,3 +21,4 @@ class DiSPyTests(unittest.TestCase):
 				"""
 
 		response = self._client.execute(request)
+		print(response)

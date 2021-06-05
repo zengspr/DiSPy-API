@@ -14,8 +14,9 @@ class MatrixOperations(ObjectType):
 	product = Field(
 		matrix, first=Argument(matrix, required=True), second=Argument(matrix, required=True))
 
+	@staticmethod
 	def resolve_product(
-			self, info, first: type(matrix), second: type(matrix)) -> type(matrix):
+			parent, info, first: type(matrix), second: type(matrix)) -> type(matrix):
 		"""
 		Somehow Graphene.List works as an argument to np.asarray and we can also automatically
 		convert from a python list back to a Graphene.List. It also seems like exception messages
