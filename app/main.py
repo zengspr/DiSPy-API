@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from app.routes import graphql
 
 """
-Starts the server. All the server-related configuration (middleware, URLs, etc.) is set up here.
+Starts the API server. All the server-related configuration (middleware, URLs, etc.) is set up here.
 """
 
 server = FastAPI()

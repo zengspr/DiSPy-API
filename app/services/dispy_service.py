@@ -6,42 +6,38 @@ from DiSPy.core.irreps import IrrepTools
 from DiSPy.perturb import gen_perturb
 
 """
-image directory - string, req
-interpolation - bool
-# images - int (odd positive), req
-perturb - bool
-symmetry tolerance - positive int but defaults to float?
-angle tolerance - nonzero float
-general tolerance - positive float
-vector tolerance - three floats
-transition tolerance - three floats
-transformation matrix # - positive int, 0 auto, -1 manual
-transformation matrix - 3x3 matrix
-origin shift - three floats
-input format - string
-output format - string
-irrep # - positive int, req
-irrep dimension - positive int
-mode coefficients - nonzero float, elements equal to irrep dimension
-minimum movement - positive float
-perturbation magnitude - positive float
-
-default format VASP-POSCAR
+This service is responsible for integrating DiSPy to the API. 
 """
 
 def get_IO(perturb: bool, num_images: int, images: str) -> IO:
-    return IO(perturb=perturb, numIm=num_images, image_dir=images)
+	"""
+	Returns an IO object that initializes data based on the parameters which are needed for later computations.
+	"""
+	return IO(perturb=perturb, numIm=num_images, image_dir=images)
 
-def get_initial_path(io: IO) -> Path:
-     structure_list = io.get_images()
-     return Path(structure_list)
+def get_input_path(io: IO) -> Path:
+	"""
+	Returns an input path that is needed for subsequent distortion group and perturbed path computations.
+	"""
+	structure_list = io.get_images()
+	return Path(structure_list)
 
 def compute_distortion_group(io: IO, input_path: Path) -> None:
-    get_DG(input_path, io)
+	"""
+	Returns a distortion group given an IO object and input path.
+	"""
+	get_DG(input_path, io)
 
 def get_possible_irreps(distortion_group_name: str) -> str:
-    return IrrepTools.possible_irreps(distortion_group_name)
+	"""
+	Returns possible irreducible representations associated with the given distortion group e.g. Cmcm*.
+	"""
+	# like a lookup table - give name of a symmetry group, get some properties of that group
+	return IrrepTools.possible_irreps(distortion_group_name)
 
 def get_perturbed_path(io: IO, input_path: Path, irrep_number: int) -> Path:
-    perturbed_images, basis = gen_perturb(input_path, irrep_number, io)
-    return Path(perturbed_images)
+	"""
+	Returns a perturbed path given an input path and an irrep number associated with a material e.g. 2857.
+	"""
+	perturbed_images, basis = gen_perturb(input_path, irrep_number, io)
+	return Path(perturbed_images)
