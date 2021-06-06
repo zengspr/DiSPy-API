@@ -5,22 +5,23 @@ from DiSPy.dg_elements import get_DG
 from DiSPy.core.irreps import IrrepTools
 from DiSPy.perturb import gen_perturb
 
+from pymatgen.core import Structure
+
 """
 This service is responsible for integrating DiSPy to the API. 
 """
 
-def get_IO(perturb: bool, num_images: int, images: str) -> IO:
+def get_IO(perturb: bool, num_images: int) -> IO:
 	"""
 	Returns an IO object that initializes data based on the parameters which are needed for later computations.
 	"""
-	return IO(perturb=perturb, numIm=num_images, image_dir=images)
+	return IO(perturb=perturb, numIm=num_images)
 
-def get_input_path(io: IO) -> Path:
+def get_input_path(structures: list[dict]) -> Path:
 	"""
 	Returns an input path that is needed for subsequent distortion group and perturbed path computations.
 	"""
-	structure_list = io.get_images()
-	return Path(structure_list)
+	return Path([Structure.from_dict(structure) for structure in structures])
 
 def compute_distortion_group(io: IO, input_path: Path) -> None:
 	"""

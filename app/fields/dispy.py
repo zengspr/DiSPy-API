@@ -7,22 +7,25 @@ class DiSPyRequest:
     """
     Used to share per-request IO & input path data among DiSPy resolvers.
     An instance of this class is passed to resolvers as the 'parent' argument.
-    """
-    def __init__(self, perturb: bool, num_images: int, images: str):
-        self.perturb: bool = perturb
-        self.num_images: int = num_images
-        self.images: str = images # TODO: update this to receive from frontend
-        # TODO: set up other fields
 
-        # Setup data needed for subsequent computations
-        self.io = get_IO(perturb, num_images, images)
-        self.input_path = get_input_path(self.io)
+    TODO:
+        - update images to receive from frontend instead of test util
+        - add other dispy args
+    """
+    def __init__(self, perturb: bool, num_images: int, structures: list[dict]):
+        """
+        :param perturb:
+        :param num_images:
+        :param structures: A list of dicts corresponding to pymatgen Structures
+        """
+        self.io = get_IO(perturb, num_images)
+        self.input_path = get_input_path(structures)
 
 
 class DiSPy(ObjectType):
     """
     Represents a GraphQL field with the schema:
-    dispy(perturb: Boolean!, numImages: Int!, images: String!, ...) {
+    dispy(perturb: Boolean!, numImages: Int!, structures: [String], ...) {
 				distortionGroup(): String
 				possibleIrreps(distortionGroupName: String!): String,
 				perturbedPath(irrepNumber: Int!): String,

@@ -1,9 +1,11 @@
-from graphene import Boolean, Field
+from graphene import Boolean, Field, List
 
 from app.fields.matrix_operations import MatrixOperations
 from app.fields.dispy import *
-from app.utils.utils import test_images_dir
+from tests.utils.test_utils import get_test_structures
 
+
+Structures = List(String) # represents a collection of pymatgen Structures
 
 class Query(ObjectType):
 	"""
@@ -13,7 +15,7 @@ class Query(ObjectType):
 			matrixOperations {
 				product(first: [[Int]], second: [[Int]]): [[Int]]
 			}
-			dispy(perturb: Boolean!, numImages: Int!, images: String!, ...) {
+			dispy(perturb: Boolean!, numImages: Int!, structures: [String], ...) {
 				distortionGroup(): String
 				possibleIrreps(distortionGroupName: String!): String,
 				perturbedPath(irrepNumber: Int!): String,
@@ -44,9 +46,9 @@ class Query(ObjectType):
 	dispy = Field(DiSPy,
 				  perturb=Argument(Boolean, required=True),
 				  num_images=Argument(Int, required=True),
-				  images=Argument(String, default_value=test_images_dir()))
+				  structures=Argument(Structures, default_value=get_test_structures()))
 	@staticmethod
-	def resolve_dispy(parent, info, perturb: bool, num_images: int, images: str):
+	def resolve_dispy(parent, info, perturb: bool, num_images: int, structures: list[dict]):
 		# The object being returned here becomes available through 'parent' in
 		# the resolvers for subfields of the dispy field.
-		return DiSPyRequest(perturb, num_images, images)
+		return DiSPyRequest(perturb, num_images, structures)

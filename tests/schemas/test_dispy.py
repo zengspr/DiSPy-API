@@ -22,3 +22,9 @@ class DiSPyTests(unittest.TestCase):
 
 		response = self._client.execute(request)
 		print(response)
+
+		# TODO: fix populating irrep_matrices in dispy
+		# self.assertFalse('errors' in response)
+		# self.assertTrue(response['data']['dispy']['perturbedPath'])
+		self.assertTrue(response['data']['dispy']['distortionGroup'])
+		self.assertTrue(response['data']['dispy']['possibleIrreps'])
