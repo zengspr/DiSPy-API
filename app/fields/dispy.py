@@ -23,9 +23,9 @@ class DiSPy(ObjectType):
     """
     Represents a GraphQL field with the schema:
     dispy(perturb: Boolean!, numImages: Int!, images: String!, ...) {
-				distortionGroup(): DiSPyPath
+				distortionGroup(): String
 				possibleIrreps(distortionGroupName: String!): String,
-				perturbedPath(irrepNumber: Int!): DiSPyPath,
+				perturbedPath(irrepNumber: Int!): String,
 			}
 
     TODO: Consider making resolvers return a custom DiSPyPath Graphene Scalar object.

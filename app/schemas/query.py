@@ -14,9 +14,9 @@ class Query(ObjectType):
 				product(first: [[Int]], second: [[Int]]): [[Int]]
 			}
 			dispy(perturb: Boolean!, numImages: Int!, images: String!, ...) {
-				distortionGroup(): DiSPyPath
+				distortionGroup(): String
 				possibleIrreps(distortionGroupName: String!): String,
-				perturbedPath(irrepNumber: Int!): DiSPyPath,
+				perturbedPath(irrepNumber: Int!): String,
 			},
 		}
 	"""
